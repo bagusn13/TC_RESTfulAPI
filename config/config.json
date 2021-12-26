@@ -20,10 +20,16 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "rvserver",
+    "password": "indojkt48",
+    "database": "tempatcukur_dev",
+    "host": "tempatcukur.id",
+    "dialect": "postgres",
+    "logging": false,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "idle": 10000
+    }
   }
 }
