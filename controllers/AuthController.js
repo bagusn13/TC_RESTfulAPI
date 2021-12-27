@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const log = require("../logger");
 const models = require("../models");
 const bcryptjs = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
@@ -23,12 +24,12 @@ const loginUser = async (req, res) => {
         // jika passwordnya bener
         const data = {
           email: dataUser.email,
-          role: dataUser.role,
+          name: dataUser.firstName + dataUser.lastName,
         };
         const accessToken = await jsonwebtoken.sign(
           data,
           process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "1m" }
+          { expiresIn: "10m" }
         );
         const refreshToken = await jsonwebtoken.sign(
           data,
@@ -58,11 +59,13 @@ const loginUser = async (req, res) => {
         message: "Email is not registered",
       });
     }
+    log.logger.info("POST ./auth/signin is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./auth/signin -> ${error.message}`);
   }
 };
 
@@ -104,10 +107,10 @@ const refreshToken = async (req, res) => {
         const accessToken = jsonwebtoken.sign(
           {
             email: user.email,
-            role: user.role,
+            name: user.firstName + user.lastName,
           },
           process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "1m" }
+          { expiresIn: "10m" }
         );
         res.status(200).send({
           status: true,
@@ -116,11 +119,13 @@ const refreshToken = async (req, res) => {
         });
       }
     );
+    log.logger.info("POST ./auth/refreshtoken is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./auth/refreshtoken -> ${error.message}`);
   }
 };
 
@@ -135,16 +140,16 @@ const logoutUser = async (req, res) => {
     });
 
     if (!refresh_token) {
-      return res.status(401).json({
+      return res.status(404).json({
         status: "false",
-        message: "Access denied. No token provided",
+        message: "Field refresh token is empty",
       });
     }
 
     if (!isToken) {
       return res.status(401).json({
         status: "false",
-        message: "Unauthorized access",
+        message: "Wrong refresh token",
       });
     }
 
@@ -159,11 +164,14 @@ const logoutUser = async (req, res) => {
       status: true,
       message: "You have been successfully logged out",
     });
+
+    log.logger.info("POST ./auth/signout is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./auth/signout -> ${error.message}`);
   }
 };
 
@@ -183,11 +191,13 @@ const otpRegister = async (req, res) => {
         });
       }
     });
+    log.logger.info("POST ./auth/otpregister is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./auth/otpregister -> ${error.message}`);
   }
 };
 
@@ -206,16 +216,17 @@ const verifyOtp = async (req, res) => {
         });
       }
     });
+    log.logger.info("POST ./auth/verifyotp is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./auth/verifyotp -> ${error.message}`);
   }
 };
 
 module.exports = {
-  // regiterUser,
   loginUser,
   refreshToken,
   logoutUser,

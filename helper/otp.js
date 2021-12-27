@@ -52,9 +52,6 @@ async function verifyOtp(params, callback) {
   let [hashValue, expires] = params.hash.split(".");
 
   let now = Date.now();
-  console.log(now);
-  console.log(expires);
-  console.log(now > parseInt(expires));
   if (now > parseInt(expires)) return callback("OTP Expired");
 
   let data = `${params.phone}.${params.otp}.${expires}`;
