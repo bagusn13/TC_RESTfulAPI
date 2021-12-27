@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const log = require("../logger");
 const models = require("../models");
 
 const createTransaction = async (req, res) => {
@@ -20,11 +21,13 @@ const createTransaction = async (req, res) => {
       message: "Transaction data added successfully",
       data: Transaction,
     });
+    log.logger.info("POST ./transaction is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./transaction -> ${error.message}`);
   }
 };
 

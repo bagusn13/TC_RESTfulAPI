@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const log = require("../logger");
 const models = require("../models");
 
 const getAllDayByIdPlace = async (req, res) => {
@@ -15,11 +16,13 @@ const getAllDayByIdPlace = async (req, res) => {
       message: `Successfully get all working time data by mitra id`,
       data: workingTime,
     });
+    log.logger.info("GET ./place/worktime/:id is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`GET ./place/worktime/:id -> ${error.message}`);
   }
 };
 
@@ -39,11 +42,13 @@ const createWorkingTime = async (req, res) => {
       message: "Working time data created successfully",
       data: workingTime,
     });
+    log.logger.info("POST ./place/worktime is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./place/worktime -> ${error.message}`);
   }
 };
 
