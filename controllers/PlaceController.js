@@ -7,16 +7,23 @@ const fs = require("fs");
 
 const getAllPlace = async (req, res) => {
   try {
-    const Place = await models.Place.findAll({
+    const { count, rows } = await models.Place.findAndCountAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
       },
     });
-    res.status(200).send({
-      status: true,
-      message: "Successfully get all mitra data",
-      data: Place,
-    });
+    if (count === 0) {
+      res.status(404).send({
+        status: false,
+        message: "Mitra data is empty",
+      });
+    } else {
+      res.status(200).send({
+        status: true,
+        message: "Successfully get all mitra data",
+        data: rows,
+      });
+    }
     log.logger.info("GET ./place is accessed");
   } catch (error) {
     res.status(500).send({
@@ -47,7 +54,6 @@ const createPlace = async (req, res) => {
       data: Place,
     });
     log.logger.info("POST ./place is accessed");
-    log.logger.info("POST ./place -> Upload successfully");
   } catch (error) {
     res.status(500).send({
       status: false,
@@ -93,7 +99,7 @@ const updatePlace = async (req, res) => {
       // cek apakah data sebelumnya punya img atau tidak
       // jika ya maka apus image lamanya
       if (!isId.dataValues.img) {
-        log.logger.debug("PUT ./place/:id -> No image data");
+        console.log("No image data");
       } else {
         const pathDelete = "./" + isId.dataValues.img;
         fs.unlink(pathDelete, (err) => {
@@ -101,13 +107,13 @@ const updatePlace = async (req, res) => {
             log.logger.fatal(err);
             return;
           }
-          log.logger.debug("PUT ./place -> Image has been replaced");
+          console.log("Image has been replaced");
         });
       }
 
       res.status(200).send({
         status: true,
-        message: "Data has been updated successfully",
+        message: "Place data has been updated successfully",
       });
     } else {
       fs.unlink("./" + pathRaw.replace(/\\/g, path.sep), (err) => {
@@ -115,16 +121,14 @@ const updatePlace = async (req, res) => {
           log.logger.fatal(err);
           return;
         }
-        log.logger.fatal("PUT ./place/:id -> Upload failed");
       });
       res.status(404).send({
         status: false,
-        message: "Data not found",
+        message: "Place not found",
       });
     }
 
     log.logger.info("PUT ./place/:id is accessed");
-    log.logger.info("PUT ./place/:id -> Upload successfully");
   } catch (error) {
     res.status(500).send({
       status: false,
@@ -265,7 +269,7 @@ const deletePlace = async (req, res) => {
       });
 
       if (!isId.dataValues.img) {
-        log.logger.debug("DELETE ./place/:id -> No image data");
+        console.log("No image data");
       } else {
         const pathDelete = "./" + isId.dataValues.img;
         fs.unlink(pathDelete, (err) => {
@@ -279,12 +283,12 @@ const deletePlace = async (req, res) => {
 
       res.status(200).send({
         status: true,
-        message: "Data has been deleted",
+        message: "Place data has been deleted",
       });
     } else {
       res.status(404).send({
         status: false,
-        message: "Data not found",
+        message: "Place data not found",
       });
     }
 

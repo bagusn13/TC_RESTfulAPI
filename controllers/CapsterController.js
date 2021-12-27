@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const log = require("../logger");
 const models = require("../models");
 
 const createCapster = async (req, res) => {
@@ -16,11 +17,13 @@ const createCapster = async (req, res) => {
       message: "Capster data created successfully",
       data: Capster,
     });
+    log.logger.info("POST ./capster is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./capster -> ${error.message}`);
   }
 };
 

@@ -181,7 +181,7 @@ const updatePromo = async (req, res) => {
             log.logger.fatal(err);
             return;
           }
-          console.log("Image has been deleted");
+          console.log("Image has been replaced");
         });
       }
 
