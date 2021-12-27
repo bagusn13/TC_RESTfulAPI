@@ -1,29 +1,42 @@
 require("dotenv").config();
 const express = require("express");
+const log = require("../logger");
 const models = require("../models");
 const bcryptjs = require("bcryptjs");
 const path = require("path");
 const fs = require("fs");
 
-// READ
+// get all user
 const getAllUser = async (req, res) => {
   try {
-    const User = await models.User.findAll({});
-
-    res.status(200).send({
-      status: true,
-      message: "Successfully get all user data",
-      data: User,
+    const { count, rows } = await models.User.findAndCountAll({
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
     });
+    if (count === 0) {
+      res.status(404).send({
+        status: false,
+        message: "User data is empty",
+      });
+    } else {
+      res.status(200).send({
+        status: true,
+        message: "Successfully get all user data",
+        data: rows,
+      });
+    }
+    log.logger.info("GET ./user is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`GET ./user -> ${error.message}`);
   }
 };
 
-// READ BY ID
+// get user by id
 const getUserById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -47,11 +60,13 @@ const getUserById = async (req, res) => {
         message: `User not found`,
       });
     }
+    log.logger.info("GET ./user/:id is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`GET ./user/:id -> ${error.message}`);
   }
 };
 
@@ -99,11 +114,13 @@ const createUser = async (req, res) => {
         data: User,
       });
     }
+    log.logger.info("POST ./user is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./user -> ${error.message}`);
   }
 };
 
@@ -139,11 +156,13 @@ const createUserWithoutImg = async (req, res) => {
         data: User,
       });
     }
+    log.logger.info("POST ./user/signupnoimg is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./user/signupnoimg -> ${error.message}`);
   }
 };
 
@@ -227,11 +246,13 @@ const updateUser = async (req, res) => {
         message: "Data not found",
       });
     }
+    log.logger.info("PUT ./user/:id is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`PUT ./user/:id -> ${error.message}`);
   }
 };
 
@@ -292,11 +313,13 @@ const updateUserWithoutImg = async (req, res) => {
         message: "Data not found",
       });
     }
+    log.logger.info("PUT ./user/updatenoimg/:id is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`PUT ./user/updatenoimg/:id -> ${error.message}`);
   }
 };
 
@@ -340,11 +363,13 @@ const deleteUser = async (req, res) => {
         message: "Data not found",
       });
     }
+    log.logger.info("DELETE ./user/:id is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`DELETE ./user/:id -> ${error.message}`);
   }
 };
 
