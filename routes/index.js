@@ -7,6 +7,7 @@ const appoint = require("./appoint");
 const available = require("./available");
 const transaction = require("./transaction");
 const capster = require("./capster");
+const promo = require("./promo");
 
 router.use("/user", user);
 router.use("/auth", auth);
@@ -15,5 +16,6 @@ router.use("/appoint", appoint);
 router.use("/available", available);
 router.use("/transaction", transaction);
 router.use("/capster", capster);
+router.use("/promo", promo);
 
 module.exports = router;
