@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const log = require("../logger"); 
 const models = require("../models");
 const moment = require("moment");
 const { Op } = require("sequelize");
@@ -53,11 +54,13 @@ const getAvailable = async (req, res) => {
       message: `Successfully get available working time at ${date.format("L")}`,
       available: available,
     });
+    log.logger.info("GET ./available/:placeId/:date is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`GET ./available/:placeId/:date -> ${error.message}`);
   }
 };
 
