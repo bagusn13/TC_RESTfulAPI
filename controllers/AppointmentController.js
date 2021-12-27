@@ -1,41 +1,45 @@
 require("dotenv").config();
 const express = require("express");
+const log = require("../logger");
 const models = require("../models");
 const moment = require("moment");
 const randstr = require("../helper/randStr");
 
+// get all appoint
 const getAllAppoint = async (req, res) => {
   try {
-    const Appoint = await models.Appointment.findAll({
+    const { count, rows } = await models.Appointment.findAndCountAll({
       attributes: {
         exclude: ["createdAt", "updatedAt"],
       },
     });
-    const { count, rows } = await models.Appointment.findAndCountAll();
     if (count === 0) {
       res.status(404).send({
         status: false,
-        message: "Empty",
+        message: "Appointment data is empty",
       });
     } else {
       res.status(200).send({
         status: true,
         message: "Successfully get all appointment data",
-        data: Appoint,
+        data: rows,
       });
     }
+    log.logger.info("GET ./appoint is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`GET ./appoint -> ${error.message}`);
   }
 };
 
+// get history appoint by user
 const getAppointByUserId = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const Appoint = await models.Appointment.findAll({
+    const { count, rows } = await models.Appointment.findAndCountAll({
       include: [
         {
           model: models.Transaction,
@@ -55,11 +59,6 @@ const getAppointByUserId = async (req, res) => {
         exclude: ["createdAt", "updatedAt"],
       },
     });
-    const { count, rows } = await models.Appointment.findAndCountAll({
-      where: {
-        userId: userId,
-      },
-    });
     if (count === 0) {
       res.status(404).send({
         status: false,
@@ -69,17 +68,20 @@ const getAppointByUserId = async (req, res) => {
       res.status(200).send({
         status: true,
         message: "Successfully get appointment history data",
-        data: Appoint,
+        data: rows,
       });
     }
+    log.logger.info("GET ./appoint/:userId is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`GET ./appoint/:userId -> ${error.message}`);
   }
 };
 
+// create appointment
 const createAppoint = async (req, res) => {
   try {
     const { book, start, notes, price, status, userId, placeId, id_capster } =
@@ -109,31 +111,31 @@ const createAppoint = async (req, res) => {
       message: "Appoint data created successfully",
       data: Appoint,
     });
+    log.logger.info("POST ./appoint is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`POST ./appoint -> ${error.message}`);
   }
 };
 
+// delete appointment by id
 const deleteAppoint = async (req, res) => {
   try {
-    const appointId = req.params.appointId;
-    const userId = req.params.userId;
+    const id = req.params.id;
 
     // cek apakah data yang ingin dihapus ada atau tidak
     const isId = await models.Appointment.findOne({
       where: {
-        id: appointId,
-        userId: userId,
+        id: id,
       },
     });
     if (isId) {
       await models.Appointment.destroy({
         where: {
-          id: appointId,
-          userId: userId,
+          id: id,
         },
       });
 
@@ -147,11 +149,13 @@ const deleteAppoint = async (req, res) => {
         message: "Appointment not found",
       });
     }
+    log.logger.info("DELETE ./appoint/:id is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
+    log.logger.fatal(`DELETE ./appoint/:id -> ${error.message}`);
   }
 };
 
