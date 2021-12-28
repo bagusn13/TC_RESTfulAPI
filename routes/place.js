@@ -58,9 +58,9 @@ const multMiddleware = (req, res, next) => {
   });
 };
 
-router.get("/", PlaceController.getAllPlace);
-router.get("/:idPlace/:day", PlaceController.getPlaceOcSpecified);
-router.get("/:id", PlaceController.getPlaceById);
+router.get("/", authToken,PlaceController.getAllPlace);
+router.get("/:idPlace/:day", authToken, PlaceController.getPlaceOcSpecified);
+router.get("/:id", authToken, PlaceController.getPlaceById);
 router.post("/", multMiddleware, PlaceController.createPlace);
 router.put("/:id", multMiddleware, PlaceController.updatePlace);
 router.delete("/:id", PlaceController.deletePlace);

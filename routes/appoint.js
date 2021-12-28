@@ -3,9 +3,9 @@ const router = express.Router();
 const appointController = require("../controllers/AppointmentController");
 const authToken = require("../middleware/middleware");
 
-router.post("/", appointController.createAppoint);
-router.get("/", appointController.getAllAppoint);
-router.get("/:userId", appointController.getAppointByUserId);
-router.delete("/:id", appointController.deleteAppoint);
+router.post("/", authToken, appointController.createAppoint);
+router.get("/", authToken, appointController.getAllAppoint);
+router.get("/:userId", authToken, appointController.getAppointByUserId);
+router.delete("/:id", authToken, appointController.deleteAppoint);
 
 module.exports = router;
