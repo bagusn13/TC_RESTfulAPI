@@ -48,13 +48,13 @@ const loginUser = async (req, res) => {
           data: dataUser,
         });
       } else {
-        res.status(403).send({
+        res.status(200).send({
           status: false,
           message: "Password incorrect",
         });
       }
     } else {
-      res.status(404).send({
+      res.status(200).send({
         status: false,
         message: "Email is not registered",
       });

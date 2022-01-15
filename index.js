@@ -55,6 +55,6 @@ app.use("/api/", routes);
 app.use("/api/upload", express.static("upload"));
 
 app.listen(port, () => {
-  log.logger.info(`TCRestApi is listening at http://localhost:${port}`);
+  log.logger.info(`RESTfulAPI is listening at http://localhost:${port}`);
   log.logger.info(`Database is connected`);
 });
