@@ -150,10 +150,15 @@ const createUserWithoutImg = async (req, res) => {
         role: role,
       });
 
+      console.log(User.dataValues.email)
+
       res.status(200).send({
         status: true,
         message: "Congratulations, your account has been successfully created",
-        data: User,
+        data: {
+          email : User.dataValues.email,
+          password : password,
+        }
       });
     }
     log.logger.info("POST ./user/signupnoimg is accessed");

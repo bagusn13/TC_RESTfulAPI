@@ -14,36 +14,36 @@ app.use(compression());
 const routes = require("./routes");
 const port = process.env.PORT_APP || 5000;
 
-// START ADMIN JS
-AdminJS.registerAdapter(AdminJSSequelize);
-const adminJs = new AdminJS({
-  databases: [db],
-  rootPath: "/admin",
-  branding: {
-    companyName: "TempatCukur.id",
-  },
-});
+// // START ADMIN JS
+// AdminJS.registerAdapter(AdminJSSequelize);
+// const adminJs = new AdminJS({
+//   databases: [db],
+//   rootPath: "/admin",
+//   branding: {
+//     companyName: "TempatCukur.id",
+//   },
+// });
 
-const ADMIN = {
-  email: process.env.ADMIN_EMAIL || "noreply.tempatcukur@gmail.com",
-  password: process.env.ADMIN_PASSWORD || "CukurSukses99",
-};
+// const ADMIN = {
+//   email: process.env.ADMIN_EMAIL || "noreply.tempatcukur@gmail.com",
+//   password: process.env.ADMIN_PASSWORD || "CukurSukses99",
+// };
 
-const router = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
-  cookieName: process.env.ADMIN_COOKIE_NAME || "adminjs",
-  cookiePassword:
-    process.env.ADMIN_COOKIE_PASS ||
-    "supersecret-and-long-password-for-a-browser",
-  authenticate: async (email, password) => {
-    if (email === ADMIN.email && password === ADMIN.password) {
-      return ADMIN;
-    }
-    return null;
-  },
-});
+// const router = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
+//   cookieName: process.env.ADMIN_COOKIE_NAME || "adminjs",
+//   cookiePassword:
+//     process.env.ADMIN_COOKIE_PASS ||
+//     "supersecret-and-long-password-for-a-browser",
+//   authenticate: async (email, password) => {
+//     if (email === ADMIN.email && password === ADMIN.password) {
+//       return ADMIN;
+//     }
+//     return null;
+//   },
+// });
 
-app.use(adminJs.options.rootPath, router);
-// END ADMIN JS
+// app.use(adminJs.options.rootPath, router);
+// // END ADMIN JS
 
 app.use(
   bodyParser.urlencoded({
