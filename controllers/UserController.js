@@ -148,6 +148,7 @@ const createUserWithoutImg = async (req, res) => {
         password: hashPassword,
         phone: phone,
         role: role,
+        img: 'upload/images/users/dummy-profile-pic.png',
       });
 
       console.log(User.dataValues.email)
