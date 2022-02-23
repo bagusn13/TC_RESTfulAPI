@@ -181,7 +181,8 @@ const otpRegister = async (req, res) => {
       if (error) {
         res.status(500).send({
           status: false,
-          message: error,
+          message: "Failed",
+          data: error,
         });
       } else {
         res.status(200).send({
