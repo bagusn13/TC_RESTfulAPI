@@ -63,8 +63,8 @@ const multMiddleware = (req, res, next) => {
   });
 };
 
-router.get("/", authToken, UserController.getAllUser);
-router.get("/:id", authToken, UserController.getUserById);
+router.get("/", UserController.getAllUser);
+router.get("/:id", UserController.getUserById);
 router.post(
   "/",
   multMiddleware,

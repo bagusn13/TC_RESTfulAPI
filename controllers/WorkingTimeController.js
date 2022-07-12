@@ -5,10 +5,10 @@ const models = require("../models");
 
 const getAllDayByIdPlace = async (req, res) => {
   try {
-    const id = req.params.id;
+    const mitra_id = req.params.mitra_id;
     const workingTime = await models.workingTime.findAll({
       where: {
-        id_place: id,
+        id_place: mitra_id,
       },
     });
     res.status(200).send({
@@ -16,13 +16,13 @@ const getAllDayByIdPlace = async (req, res) => {
       message: `Successfully get all working time data by mitra id`,
       data: workingTime,
     });
-    log.logger.info("GET ./place/worktime/:id is accessed");
+    log.logger.info("GET ./worktime/:id is accessed");
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message,
     });
-    log.logger.fatal(`GET ./place/worktime/:id -> ${error.message}`);
+    log.logger.fatal(`GET ./worktime/:id -> ${error.message}`);
   }
 };
 

@@ -59,16 +59,12 @@ const multMiddleware = (req, res, next) => {
 };
 
 router.get("/", PlaceController.getAllPlace);
-router.get("/:idPlace/:day", authToken, PlaceController.getPlaceOcSpecified);
-router.get("/:id", authToken, PlaceController.getPlaceById);
+router.get("/:idPlace/:day", PlaceController.getPlaceOcSpecified);
+router.get("/:id", PlaceController.getPlaceById);
 router.post("/", multMiddleware, PlaceController.createPlace);
 router.put("/:id", multMiddleware, PlaceController.updatePlace);
 router.delete("/:id", PlaceController.deletePlace);
-
-router.get("/services", ServiceController.getAllServices);
-router.post("/services", ServiceController.createService);
-
-router.get("/worktime/:id", WorkingTimeController.getAllDayByIdPlace);
-router.post("/worktime", WorkingTimeController.createWorkingTime);
+// router.get("/services", ServiceController.getAllServices);
+// router.post("/services", ServiceController.createService);
 
 module.exports = router;

@@ -8,6 +8,8 @@ const available = require("./available");
 const transaction = require("./transaction");
 const capster = require("./capster");
 const promo = require("./promo");
+const worktime = require("./worktime");
+const services = require("./services");
 
 router.use("/user", user);
 router.use("/auth", auth);
@@ -17,5 +19,7 @@ router.use("/available", available);
 router.use("/transaction", transaction);
 router.use("/capster", capster);
 router.use("/promo", promo);
+router.use("/worktime", worktime);
+router.use("/services", services);
 
 module.exports = router;

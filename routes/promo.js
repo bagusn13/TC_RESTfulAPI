@@ -59,8 +59,8 @@ const multMiddleware = (req, res, next) => {
 
 router.post("/", multMiddleware, PromoController.createPromo);
 router.get("/", PromoController.getAllPromo);
-router.get("/:id", authToken, PromoController.getPromoById);
-router.get("/code/:code", authToken, PromoController.getPromoByCode);
+router.get("/:id", PromoController.getPromoById);
+router.get("/code/:code", PromoController.getPromoByCode);
 router.delete("/:id", PromoController.deletePromo);
 router.put("/:id", multMiddleware, PromoController.updatePromo);
 
